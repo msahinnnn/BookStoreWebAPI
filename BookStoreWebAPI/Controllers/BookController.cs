@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using BookStoreWebAPI.BookOperations;
+using BookStoreWebAPI.BookOperations.CreateBook;
 using BookStoreWebAPI.BookOperations.DeleteBook;
 using BookStoreWebAPI.BookOperations.GetBookDetail;
 using BookStoreWebAPI.BookOperations.GetBooks;
 using BookStoreWebAPI.BookOperations.UpdateBook;
 using BookStoreWebAPI.DBOperations;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -42,6 +45,8 @@ namespace BookStoreWebAPI.Controllers
             {
                 GetBookDetailQuery query = new GetBookDetailQuery(_context, _mapper);
                 query.BookId = id;
+                GetBookDetailQueryValidator validator = new GetBookDetailQueryValidator();
+                validator.ValidateAndThrow(query);
                 result = query.Handle();
             }
             catch (Exception ex)
@@ -61,7 +66,18 @@ namespace BookStoreWebAPI.Controllers
             try
             {
                 command.Model = newBook;
-                command.Handle();
+
+                CreateBookCommandValidator validator = new CreateBookCommandValidator();
+                validator.ValidateAndThrow(command);
+
+                //ValidationResult result = valitador.Validate(command);
+
+                //if(result.IsValid)
+                //    foreach (var item in result.Errors)
+                //        Console.WriteLine("Property : " + item.PropertyName + " Error Message : " + item.ErrorMessage);
+
+                //else
+                //    command.Handle();
             }
             catch (Exception ex)
             {
@@ -81,6 +97,9 @@ namespace BookStoreWebAPI.Controllers
                 UpdateBookCommand command = new UpdateBookCommand(_context);
                 command.BookId = id;
                 command.Model = updatedbook;
+
+                UpdateBookCommandValidator validator = new UpdateBookCommandValidator();
+                validator.ValidateAndThrow(command);
                 command.Handle();
 
             }
@@ -99,6 +118,8 @@ namespace BookStoreWebAPI.Controllers
             {
                 DeleteBookCommand command = new DeleteBookCommand(_context);
                 command.BookId = id;
+                DeleteBookCommandValidator validator = new DeleteBookCommandValidator();
+                validator.ValidateAndThrow(command);
                 command.Handle();
             }
             catch (Exception ex)
