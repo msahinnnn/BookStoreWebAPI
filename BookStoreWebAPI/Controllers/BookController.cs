@@ -1,4 +1,5 @@
-﻿using BookStoreWebAPI.BookOperations;
+﻿using AutoMapper;
+using BookStoreWebAPI.BookOperations;
 using BookStoreWebAPI.BookOperations.DeleteBook;
 using BookStoreWebAPI.BookOperations.GetBookDetail;
 using BookStoreWebAPI.BookOperations.GetBooks;
@@ -17,15 +18,17 @@ namespace BookStoreWebAPI.Controllers
     public class BookController : ControllerBase
     {
         private readonly BookStoreDbContext _context;
-        public BookController(BookStoreDbContext context)
+        private readonly IMapper _mapper;
+        public BookController(BookStoreDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult GetBooks()
         {
-            GetBooksQuery query = new GetBooksQuery(_context);
+            GetBooksQuery query = new GetBooksQuery(_context, _mapper);
             var result = query.Handle();
             return Ok(result);
         }
@@ -37,7 +40,7 @@ namespace BookStoreWebAPI.Controllers
             BookDetailViewModel result;
             try
             {
-                GetBookDetailQuery query = new GetBookDetailQuery(_context);
+                GetBookDetailQuery query = new GetBookDetailQuery(_context, _mapper);
                 query.BookId = id;
                 result = query.Handle();
             }
@@ -45,27 +48,27 @@ namespace BookStoreWebAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            
+
             return Ok(result);
         }
 
 
 
         [HttpPost]
-        public IActionResult AddBook([FromBody] CreateBookCommand.CreateBookModel newBook)
+        public IActionResult AddBook([FromBody] CreateBookCommand.CreateDetailViewModel newBook)
         {
-            CreateBookCommand command = new CreateBookCommand(_context);
+            CreateBookCommand command = new CreateBookCommand(_context, _mapper);
             try
             {
                 command.Model = newBook;
                 command.Handle();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-            
-            
+
+
             return Ok();
 
         }
@@ -85,7 +88,7 @@ namespace BookStoreWebAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
-           
+
             return Ok();
         }
 
@@ -101,7 +104,7 @@ namespace BookStoreWebAPI.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-                
+
             }
 
             return Ok();

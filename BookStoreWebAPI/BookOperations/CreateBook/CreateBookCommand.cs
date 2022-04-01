@@ -1,4 +1,5 @@
-﻿using BookStoreWebAPI.DBOperations;
+﻿using AutoMapper;
+using BookStoreWebAPI.DBOperations;
 using System;
 using System.Linq;
 
@@ -6,11 +7,13 @@ namespace BookStoreWebAPI.BookOperations
 {
     public class CreateBookCommand
     {
-        public CreateBookModel Model { get; set; }
+        public CreateDetailViewModel Model { get; set; }
         private readonly BookStoreDbContext _dbContext;
-        public CreateBookCommand(BookStoreDbContext dbContext)
+        private readonly IMapper _mapper;
+        public CreateBookCommand(BookStoreDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public void Handle()
@@ -18,18 +21,18 @@ namespace BookStoreWebAPI.BookOperations
             var book = _dbContext.Books.SingleOrDefault(x => x.Title == Model.Title);
             if(book is not null)
                 throw new InvalidOperationException("Kitap zatem mevcut");
-            book = new Book();
-            book.Title = Model.Title;
-            book.PublishDate = Model.PublishDate;
-            book.PageCount = Model.PageCount;
-            book.GenreId = Model.GenreId;
+            book = _mapper.Map<Book>(Model); //new Book();
+            //book.Title = Model.Title;
+            //book.PublishDate = Model.PublishDate;
+            //book.PageCount = Model.PageCount;
+            //book.GenreId = Model.GenreId;
 
             _dbContext.Books.Add(book);
             _dbContext.SaveChanges();
 
 
         }
-        public class CreateBookModel
+        public class CreateDetailViewModel
         {
             public string Title { get; set; }
             public int GenreId { get; set; }
