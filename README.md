@@ -1,3 +1,3 @@
 # BookStoreWebAPI
-.NET Core Exercises
+.NET Core Exercises <br>
  www.patika.dev
