@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BookStoreWebAPI.Cammon;
 using BookStoreWebAPI.DBOperations;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -19,7 +20,7 @@ namespace BookStoreWebAPI.BookOperations.GetBookDetail
 
         public BookDetailViewModel Handle()
         {
-            var book = _dbContext.Books.Where(x => x.Id == BookId).SingleOrDefault();
+            var book = _dbContext.Books.Include(x => x.Genre).Where(x => x.Id == BookId).SingleOrDefault();
             if (book is null)
                 throw new InvalidOperationException("Kitap bulunamadı");
             BookDetailViewModel vm = _mapper.Map<BookDetailViewModel>(book); // new BookDetailViewModel();
