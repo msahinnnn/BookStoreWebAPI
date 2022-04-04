@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using BookStoreWebAPI.DBOperations;
+using BookStoreWebAPI.Entities;
 
 namespace BookStoreWebAPI.DBOperations
 {
@@ -16,6 +17,22 @@ namespace BookStoreWebAPI.DBOperations
                 {
                     return;
                 }
+
+                context.Genres.AddRange(
+                    new Genre
+                    {
+                        Name = "Personal Growth"
+                    },
+                    new Genre
+                    {
+                        Name = "Science Fiction"
+                    },
+                    new Genre
+                    {
+                        Name = "Noval"
+                    }
+                    );
+
 
                 context.Books.AddRange(
                     new Book
@@ -44,7 +61,7 @@ namespace BookStoreWebAPI.DBOperations
                     }
                 );
 
-                //kayıt etmesini sağlamak için
+                
                 context.SaveChanges();
 
             }
