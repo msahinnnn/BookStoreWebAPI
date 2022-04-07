@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BookStoreWebAPI.Cammon;
 using BookStoreWebAPI.DBOperations;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,10 +23,7 @@ namespace BookStoreWebAPI.BookOperations.GetBookDetail
             if (book is null)
                 throw new InvalidOperationException("Kitap bulunamadı");
             BookDetailViewModel vm = _mapper.Map<BookDetailViewModel>(book); // new BookDetailViewModel();
-            //vm.Title = book.Title;
-            //vm.PageCount = book.PageCount;
-            //vm.PublishDate = book.PublishDate.Date.ToString("dd/MM/yyyy");
-            //vm.Genre = ((GenreEnum)book.GenreId).ToString();
+          
             return vm;
         }
     }
