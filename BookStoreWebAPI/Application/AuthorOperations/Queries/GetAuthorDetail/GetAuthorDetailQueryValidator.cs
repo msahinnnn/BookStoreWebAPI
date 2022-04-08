@@ -1,6 +1,12 @@
-﻿namespace BookStoreWebAPI.Application.AuthorOperations.Queries.GetAuthorDetail
+﻿using FluentValidation;
+
+namespace BookStoreWebAPI.Application.AuthorOperations.Queries.GetAuthorDetail
 {
-    public class GetAuthorDetailQueryValidator
+    public class GetAuthorDetailQueryValidator : AbstractValidator<GetAuthorDetailQuery>
     {
+        public GetAuthorDetailQueryValidator()
+        {
+            RuleFor(query => query.AuthorId).GreaterThan(0);
+        }
     }
 }

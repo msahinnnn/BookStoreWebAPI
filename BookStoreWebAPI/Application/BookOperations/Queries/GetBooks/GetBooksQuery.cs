@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BookStoreWebAPI.Cammon;
 using BookStoreWebAPI.DBOperations;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -41,7 +40,6 @@ namespace BookStoreWebAPI.BookOperations.GetBooks
 
     }
 
-
     public class BooksViewModel
     {
 
@@ -49,21 +47,8 @@ namespace BookStoreWebAPI.BookOperations.GetBooks
         public int PageCount { get; set; }
         public string PublishDate { get; set; }
         public string  Genre { get; set; }
-
-
-
-
+        public string Author { get; set; }
 
     }
-
-
-
-
-
-
-
-
-
-
 
 }

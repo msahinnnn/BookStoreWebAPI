@@ -9,8 +9,8 @@ namespace BookStoreWebAPI.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Surname { get; set; }
         public DateTime BirthDate { get; set; }
-        public int BookId { get; set; }
-        public Book Book { get; set; }
+
     }
 }
